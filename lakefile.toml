@@ -1,0 +1,7 @@
+name = "ITreeMasterMind"
+version = "0.1.0"
+defaultTargets = ["itreemastermind"]
+
+[[lean_exe]]
+name = "itreemastermind"
+root = "Main"
