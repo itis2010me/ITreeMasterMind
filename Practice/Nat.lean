@@ -49,3 +49,14 @@ def toNat' : Nat -> Nat'
 
 #eval toOrdNat (toNat' 5) = 5
 #eval toOrdNat (toNat' 0) = 0
+
+def mulNat : Nat' -> Nat' -> Nat'
+  -- | _, zero => zero
+  | zero, _ => zero
+  | succ x, t => addNat (mulNat x t) t -- (x + 1) y = xy + y
+
+#eval toOrdNat (mulNat (toNat' 5) (toNat' 5))
+#eval toOrdNat (mulNat (toNat' 5) (toNat' 0))
+#eval toOrdNat (mulNat (toNat' 5) (toNat' 1))
+#eval toOrdNat (mulNat (toNat' 0) (toNat' 1))
+#eval toOrdNat (mulNat (toNat' 2) (toNat' 3))

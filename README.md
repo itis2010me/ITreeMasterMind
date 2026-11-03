@@ -16,7 +16,7 @@ References:
 | Path | Contents |
 |---|---|
 | `Main.lean` | Entry point of the `itreemastermind` executable |
-| `Practice/Inductive.lean` | Practice with inductive types: a custom `Nat'` with `geNat`, `addNat`, and conversions to and from `Nat` |
+| `Practice/Nat.lean` | Practice with inductive types: a custom `Nat'` with `geNat`, `addNat`, and conversions to and from `Nat` |
 | `Practice/Theorems.lean` | Theorems about the `Nat'` definitions (proofs in progress; unfinished ones are `sorry`) |
 
 ## Build
@@ -29,6 +29,6 @@ lake build                      # build the default targets (the executable)
 lake build Practice             # build and check the Practice library
 lake build Practice.Theorems    # build a single module
 lake exe itreemastermind        # build and run the executable
-lake env lean Practice/Inductive.lean   # check one file directly
+lake env lean Practice/Nat.lean   # check one file directly
 lake clean                      # delete build output (.lake/build)
 ```

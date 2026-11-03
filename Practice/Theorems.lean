@@ -1,4 +1,4 @@
-import Practice.Inductive
+import Practice.Nat
 open Nat'
 
 /-! Theorems about `Nat'`, `addNat`, `toOrdNat`, `toNat'` and `geNat`.
