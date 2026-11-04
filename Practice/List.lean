@@ -77,4 +77,34 @@ def flatMap (f : α → List' β) : List' α → List' β
 #eval flatMap (fun x => cons x nil) (cons 1 (cons 2 nil))
     = cons 1 (cons 2 nil)                                        -- a function that wraps each element
 
+-- similar to pure
+def singleton (x : α) : List' α :=
+  cons x nil
+
+#eval flatMap singleton (cons 1 (cons 2 (cons 3 nil))) = cons 1 (cons 2 (cons 3 nil))
+
 end List'
+
+-- preparation for making List' into a monad
+
+instance : Monad List' where
+  pure      := List'.singleton
+  bind xs f := List'.flatMap f xs
+
+open List'
+
+-- `:=` just names a value: x and y are the whole lists. No `bind` is called,
+-- so this is only two `let`s and an expression. Result: [1, 2, 10, 20].
+#eval (do
+  let x := cons 1 (cons 2 nil)
+  let y := cons 10 (cons 20 nil)
+  append x y)
+
+-- `←` calls `bind`: x is ONE element of the list at a time (a Nat, not a list),
+-- and the rest of the block runs once per element. Each `←` is a nested `bind`:
+--   bind xs (fun x => bind ys (fun y => pure (x + y)))
+-- Result: every (x, y) combination, summed: [11, 21, 12, 22].
+#eval (do
+  let x ← cons 1 (cons 2 nil)
+  let y ← cons 10 (cons 20 nil)
+  pure (x + y) : List' Nat) = cons 11 (cons 21 (cons 12 (cons 22 nil)))
