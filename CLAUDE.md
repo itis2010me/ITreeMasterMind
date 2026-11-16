@@ -23,7 +23,7 @@ There is no test framework. "Tests" are `#eval`/`#guard` lines at the bottom of 
 ## Structure
 
 - `Main.lean`: entry point of the `itreemastermind` exe.
-- `Practice/*.lean`: one module per topic, built as the `Practice` `lean_lib` (`globs = ["Practice.+"]`, so new files are picked up with no lakefile change). `Nat.lean` (`Nat'`), `List.lean` (`List'` + `Monad` instance), `Tree.lean` (decision tree with a `Bool → Tree α` field), `Theorems.lean` (statements about `Nat'`; two proved, the rest `sorry` on purpose).
+- `Practice/*.lean`: one module per topic, built as the `Practice` `lean_lib` (`globs = ["Practice.+"]`, so new files are picked up with no lakefile change). `Nat.lean` (`Nat'`), `List.lean` (`List'` + `Monad` instance), `Tree.lean` (decision tree with a `Bool → Tree α` field), `Theorems.lean` (statements about `Nat'`; two proved, the rest `sorry` on purpose). `Monads/` holds the monads-from-scratch detour (see PLAN.md): `Option.lean` has `Option'` and `Except' ε` with `Monad` instances; `State.lean` is next.
 - No dependencies: core Lean only, no Mathlib. Keep it that way unless the owner asks.
 
 ## Design decisions (not derivable from the code)
