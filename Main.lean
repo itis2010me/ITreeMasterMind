@@ -1,2 +1,10 @@
-def main : IO Unit :=
-  IO.println s!"Hello, world!"
+import Practice.Cmd
+
+abbrev WhatIsYourNamePrompt : Cmd Unit := Cmd.putLine "What is your name?"
+abbrev GetLine : Cmd String := Cmd.getLine
+abbrev Prompt : String -> Cmd Unit := Cmd.putLine
+
+def main : IO Unit := do
+    handleIO WhatIsYourNamePrompt
+    let name : String ← handleIO GetLine
+    handleIO (Prompt s!"Hello {name}")
