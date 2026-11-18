@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A learning project: implement the game Mastermind in Lean 4 using interaction trees (ITrees), with a plain CLI (no TUI). The owner has a Haskell/Brick Mastermind and is learning Lean and ITrees from scratch. The real ITree/game code does not exist yet; `Main.lean` is a small name-prompt demo that runs `Cmd` events through `handleIO`, and everything under `Practice/` is staged learning material.
+A learning project: implement the game Mastermind in Lean 4 using interaction trees (ITrees), with a plain CLI (no TUI). The owner has a Haskell/Brick Mastermind and is learning Lean and ITrees from scratch. The real ITree/game code does not exist yet; `Main.lean` runs a small name-prompt program (`freeHello'`, a `Free Cmd Unit`) through the `runIO` interpreter, and everything under `Practice/` is staged learning material.
 
 ## Commands
 
@@ -22,8 +22,9 @@ There is no test framework. "Tests" are `#eval`/`#guard` lines at the bottom of 
 
 ## Structure
 
-- `Main.lean`: entry point of the `itreemastermind` exe. It imports `Practice.Cmd`, so plain `lake build` (and CI) now also builds that module.
+- `Main.lean`: entry point of the `itreemastermind` exe. It imports `Practice.Free` (and so `Practice.Cmd`), so plain `lake build` (and CI) also builds those modules.
 - `Practice/Cmd.lean`: step 4, the event type `Cmd : Type → Type` (an index, not a parameter), with `describe`, a `scripted` handler and the real `handleIO : Cmd α → IO α`.
+- `Practice/Free.lean`: step 6, `Free E R` (`ret` + `vis`, an ITree without `tau`; lives in `Type 1` because `vis` stores the answer type `A`), `freeBind`, `Monad (Free E)`, `trigger`, `freeHello`/`freeHello'`, and the `runIO` interpreter.
 - `Practice/*.lean`: one module per topic, built as the `Practice` `lean_lib` (`globs = ["Practice.+"]`, so new files are picked up with no lakefile change). `Nat.lean` (`Nat'`), `List.lean` (`List'` + `Monad` instance), `Tree.lean` (decision tree with a `Bool → Tree α` field), `Theorems.lean` (statements about `Nat'`; two proved, the rest `sorry` on purpose). `Monads/` holds the monads-from-scratch detour (see PLAN.md): `Option.lean` has `Option'` and `Except' ε` with `Monad` instances; `State.lean` is next.
 - No dependencies: core Lean only, no Mathlib. Keep it that way unless the owner asks.
 
