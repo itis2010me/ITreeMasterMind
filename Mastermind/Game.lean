@@ -7,7 +7,8 @@ Exercises (after `Logic.lean`):
   1. `randomCode : ITree Cmd Code`: four random colors.
        - `trigger (Cmd.randInt 5)` gives an index 0..5; pick from `allColors`
          (`allColors[i]!`, or `getD i Color.red`).
-       - four times: write it out, or recurse on a `Nat` counter.
+       - four times, written out, then `return #v[a, b, c, d]` (the literal
+         proves the length for you; a recursive version would need a proof).
   2. `askGuess : ITree Cmd Code`: prompt, read, `parseGuess`; on `none` print
      an error and ask again. Use `iter` (state `()`), like `echoUntilQuit`.
   3. `inductive Result | won (turns : Nat) | lost (secret : Code)`.

@@ -13,6 +13,7 @@ lake build                       # default targets only (the `itreemastermind` e
 lake build Practice              # build + check all of Practice/ (this is the one to run after edits)
 lake build Practice.Tree         # a single module
 lake exe itreemastermind         # run the executable
+lake test                        # check all proofs (builds the `Proofs` lib, the testDriver)
 lake env lean Practice/List.lean # check one file directly; #eval output prints to the terminal
 ```
 
@@ -24,7 +25,7 @@ There is no test framework. "Tests" are `#eval`/`#guard` lines at the bottom of 
 
 - `Main.lean`: entry point of the `itreemastermind` exe. It imports `Practice.Free` (and so `Practice.Cmd`), so plain `lake build` (and CI) also builds those modules.
 - `Practice/Cmd.lean`: step 4, the event type `Cmd : Type → Type` (an index, not a parameter), with `describe`, a `scripted` handler and the real `handleIO : Cmd α → IO α`.
-- `Mastermind/*.lean`: the real code, built as the `Mastermind` `lean_lib` (`lake build Mastermind`), in `namespace Mastermind`. `ITree.lean` (step 7 library), `Cmd.lean` (game events + `scripted`/`handleIO`, copied from Practice), `Run.lean` (`runIO` interpreter), `Logic.lean` (pure rules: colors, parsing, `feedback`; scaffold), `Game.lean` (the game as an `ITree Cmd` program; scaffold). Rules: 6 colors, length 4, repeats allowed, 10 turns, guesses typed as letters like `rgby`. Must not import `Practice`: both define a root-level `Cmd`.
+- `Mastermind/*.lean`: the real code, built as the `Mastermind` `lean_lib` (`lake build Mastermind`), in `namespace Mastermind`. `ITree.lean` (step 7 library), `Cmd.lean` (game events + `scripted`/`handleIO`, copied from Practice), `Run.lean` (`runIO` interpreter), `Logic.lean` (pure rules: `Color`, `Code := Vector Color codeLength`, `parseGuess : String → Except ParseError Code`, `eval` scoring by the consume algorithm, `#guard` tests), `Proofs/` (separate `Proofs` lib, checked by `lake test`; `Logic.lean` and `Parse.lean`, all proved, no `sorry`: numbering round-trips, `eval` bounds/spec, and the owner's Haskell QuickCheck properties as theorems, `eval_total` = full scoring correctness, `parseGuess`/`showCode` round trips), `Game.lean` (the game as an `ITree Cmd` program; scaffold). Rules: 6 colors, length 4, repeats allowed, 10 turns, guesses typed as digits 1-6 like `1234`. Must not import `Practice`: both define a root-level `Cmd`.
 - `Practice/Free.lean`: step 6, `Free E R` (`ret` + `vis`, an ITree without `tau`; lives in `Type 1` because `vis` stores the answer type `A`), `freeBind`, `Monad (Free E)`, `trigger`, `freeHello`/`freeHello'`, and the `runIO` interpreter.
 - `Practice/*.lean`: one module per topic, built as the `Practice` `lean_lib` (`globs = ["Practice.+"]`, so new files are picked up with no lakefile change). `Nat.lean` (`Nat'`), `List.lean` (`List'` + `Monad` instance), `Tree.lean` (decision tree with a `Bool → Tree α` field), `Theorems.lean` (statements about `Nat'`; two proved, the rest `sorry` on purpose). `Monads/` holds the monads-from-scratch detour (see PLAN.md): `Option.lean` has `Option'` and `Except' ε` with `Monad` instances; `State.lean` is next.
 - No dependencies: core Lean only, no Mathlib. Keep it that way unless the owner asks.
@@ -35,7 +36,7 @@ There is no test framework. "Tests" are `#eval`/`#guard` lines at the bottom of 
 - `lean-itrees` (boogie-org) was evaluated and rejected: it is pinned to Lean v4.12 + Mathlib via QPF cofixpoints, likely not executable, and much of it is `sorry`. It is a reference only.
 - The game loop will be bounded by a turn counter so it stays total and provable.
 - Game logic stays pure; effects are events (`getLine`, `putLine`, ...) interpreted by swappable handlers (real IO vs scripted input for tests).
-- Proofs are deliberately deferred. Do not fill in `sorry`s in `Practice/Theorems.lean` unprompted.
+- Proofs about `Mastermind/Logic.lean` are done (`Proofs/`); other proofs are still deferred. Do not fill in `sorry`s in `Practice/Theorems.lean` unprompted.
 
 ## Working with the owner
 

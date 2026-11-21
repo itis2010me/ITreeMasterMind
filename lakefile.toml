@@ -1,6 +1,7 @@
 name = "ITreeMasterMind"
 version = "0.1.0"
 defaultTargets = ["itreemastermind"]
+testDriver = "Proofs"   # `lake test` = check all proofs
 
 [[lean_exe]]
 name = "itreemastermind"
@@ -13,3 +14,7 @@ globs = ["Practice.+"]
 [[lean_lib]]
 name = "Mastermind"
 globs = ["Mastermind.+"]
+
+[[lean_lib]]
+name = "Proofs"
+globs = ["Proofs.+"]
