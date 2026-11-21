@@ -24,6 +24,7 @@ There is no test framework. "Tests" are `#eval`/`#guard` lines at the bottom of 
 
 - `Main.lean`: entry point of the `itreemastermind` exe. It imports `Practice.Free` (and so `Practice.Cmd`), so plain `lake build` (and CI) also builds those modules.
 - `Practice/Cmd.lean`: step 4, the event type `Cmd : Type → Type` (an index, not a parameter), with `describe`, a `scripted` handler and the real `handleIO : Cmd α → IO α`.
+- `Mastermind/*.lean`: the real code, built as the `Mastermind` `lean_lib` (`lake build Mastermind`), in `namespace Mastermind`. `ITree.lean` (step 7 library), `Cmd.lean` (game events + `scripted`/`handleIO`, copied from Practice), `Run.lean` (`runIO` interpreter), `Logic.lean` (pure rules: colors, parsing, `feedback`; scaffold), `Game.lean` (the game as an `ITree Cmd` program; scaffold). Rules: 6 colors, length 4, repeats allowed, 10 turns, guesses typed as letters like `rgby`. Must not import `Practice`: both define a root-level `Cmd`.
 - `Practice/Free.lean`: step 6, `Free E R` (`ret` + `vis`, an ITree without `tau`; lives in `Type 1` because `vis` stores the answer type `A`), `freeBind`, `Monad (Free E)`, `trigger`, `freeHello`/`freeHello'`, and the `runIO` interpreter.
 - `Practice/*.lean`: one module per topic, built as the `Practice` `lean_lib` (`globs = ["Practice.+"]`, so new files are picked up with no lakefile change). `Nat.lean` (`Nat'`), `List.lean` (`List'` + `Monad` instance), `Tree.lean` (decision tree with a `Bool → Tree α` field), `Theorems.lean` (statements about `Nat'`; two proved, the rest `sorry` on purpose). `Monads/` holds the monads-from-scratch detour (see PLAN.md): `Option.lean` has `Option'` and `Except' ε` with `Monad` instances; `State.lean` is next.
 - No dependencies: core Lean only, no Mathlib. Keep it that way unless the owner asks.
@@ -39,6 +40,7 @@ There is no test framework. "Tests" are `#eval`/`#guard` lines at the bottom of 
 ## Working with the owner
 
 - It is a guided-learning session, not a feature build. The owner writes the code; when they say "guide me" or are stuck, give hints and questions, not the finished answer. Show full code only when they ask.
+- Indent Lean code with 4 spaces (never tabs, which Lean rejects; never 2). This applies to scaffolds and examples written for them.
 - They edit in VS Code with auto-save, so files change under you. Re-read a file before editing it and before copying line ranges out of it. Do not `git checkout` a file to restore it without checking for their uncommitted edits.
 - `PLAN.md` (gitignored, local only) holds the 8-step curriculum, with each exercise tied to the ITree piece it prepares. Steps 1-2 (List/Monad) are done; step 3 (`Tree.lean`) is in progress; step 4 is an answer-indexed event type `Cmd : Type → Type`.
 - Commits and pushes happen only when asked. Remote: `github.com/itis2010me/ITreeMasterMind`, branch `main`.

@@ -9,3 +9,7 @@ root = "Main"
 [[lean_lib]]
 name = "Practice"
 globs = ["Practice.+"]
+
+[[lean_lib]]
+name = "Mastermind"
+globs = ["Mastermind.+"]
